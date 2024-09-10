@@ -1,16 +1,16 @@
 use std::cmp::{max, min};
 
-pub fn quicksort<T: Ord + Clone + Copy>(data: &[T]) -> Vec<T> {
+pub fn quicksort<T: Ord + Clone>(data: &[T]) -> Vec<T> {
     let mut result = Vec::from(data);
     _quicksort(&mut result, 0, data.len());
     result
 }
 
-pub fn quicksort_inplace<T: Ord + Clone + Copy>(data: &mut [T]) {
+pub fn quicksort_inplace<T: Ord + Clone>(data: &mut [T]) {
     _quicksort(data, 0, data.len());
 }
 
-fn _quicksort<T: Ord + Clone + Copy>(data: &mut [T], start: usize, end: usize) {
+fn _quicksort<T: Ord + Clone>(data: &mut [T], start: usize, end: usize) {
     let amount = end - start;
     if amount < 2 {
         return;
@@ -19,8 +19,11 @@ fn _quicksort<T: Ord + Clone + Copy>(data: &mut [T], start: usize, end: usize) {
     let mid = start + amount / 2;
     // take median of (start, mid, end) as pivot as it has low chance of O(n^2)
     let pivot = max(
-        min(data[start], data[end - 1]),
-        min(max(data[start], data[end - 1]), data[mid]),
+        min(data[start].clone(), data[end - 1].clone()),
+        min(
+            max(data[start].clone(), data[end - 1].clone()),
+            data[mid].clone(),
+        ),
     );
 
     let mut pivot_idx = if pivot == data[start] {
