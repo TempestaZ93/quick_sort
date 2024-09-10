@@ -78,7 +78,9 @@ mod tests {
     #[test]
     fn out_of_place() {
         let mut rng = rand::thread_rng();
-        let data: Vec<u32> = (0..1000).map(|_| rng.gen_range(0..1000)).collect();
+        let data: Vec<u32> = (0..1_000_000)
+            .map(|_| rng.gen_range(0..1_000_000))
+            .collect();
 
         let before = std::time::Instant::now();
         let sorted = quicksort(&data);
@@ -100,7 +102,9 @@ mod tests {
     #[test]
     fn in_place() {
         let mut rng = rand::thread_rng();
-        let mut data: Vec<u32> = (0..1000).map(|_| rng.gen_range(0..1000)).collect();
+        let mut data: Vec<u32> = (0..1_000_000)
+            .map(|_| rng.gen_range(0..1_000_000))
+            .collect();
 
         let before = std::time::Instant::now();
         quicksort_inplace(&mut data);
@@ -121,7 +125,7 @@ mod tests {
 
     #[test]
     fn performance() {
-        const ELEMENTS: u32 = 1_000;
+        const ELEMENTS: u32 = 1_000_000;
         const RUNS: u32 = 100;
         let mut rng = rand::thread_rng();
 
@@ -141,7 +145,10 @@ mod tests {
 
     #[test]
     fn worst_case() {
-        let mut data: Vec<u32> = (0..1000).collect();
+        // rust compiler seems to optimize this and simply reverses the range again without calling
+        // my quicksort function.
+
+        let mut data: Vec<u32> = (0..1_000_000).rev().collect();
 
         let before = std::time::Instant::now();
         let result = quicksort(&mut data);
@@ -159,6 +166,7 @@ mod tests {
             }
         }
 
+        let mut data: Vec<u32> = (0..1_000_000).rev().collect();
         let before = std::time::Instant::now();
         quicksort_inplace(&mut data);
         let after = std::time::Instant::now();
@@ -178,7 +186,7 @@ mod tests {
 
     #[test]
     fn best_case() {
-        let mut data: Vec<u32> = (0..1000).rev().collect();
+        let mut data: Vec<u32> = (0..1_000_000).collect();
 
         let before = std::time::Instant::now();
         let result = quicksort(&mut data);
@@ -196,6 +204,7 @@ mod tests {
             }
         }
 
+        let mut data: Vec<u32> = (0..1_000_000).collect();
         let before = std::time::Instant::now();
         quicksort_inplace(&mut data);
         let after = std::time::Instant::now();
