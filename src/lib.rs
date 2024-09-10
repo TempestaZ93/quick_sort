@@ -39,9 +39,10 @@ fn _quicksort<T: Ord + Clone>(data: &mut [T], start_index: usize, end_index: usi
     while index < pivot_index {
         if data[index] > pivot {
             // swap element right of pivot if it is greater and left of pivot
-            data.swap(index, pivot_index - 1);
-            data.swap(pivot_index, pivot_index - 1);
-            pivot_index -= 1;
+            let prev = pivot_index - 1;
+            data.swap(index, prev);
+            data.swap(pivot_index, prev);
+            pivot_index = prev;
             // if an element is moved from front to back, index must stay the same
             continue;
         }
@@ -53,9 +54,10 @@ fn _quicksort<T: Ord + Clone>(data: &mut [T], start_index: usize, end_index: usi
         // swap elements if they are not in right position
         if data[index] < pivot {
             // swap element left of pivot if it is smaller and right of pivot
-            data.swap(index, pivot_index + 1);
-            data.swap(pivot_index, pivot_index + 1);
-            pivot_index += 1;
+            let next = pivot_index + 1;
+            data.swap(index, next);
+            data.swap(pivot_index, next);
+            pivot_index = next;
         }
         index += 1;
     }
