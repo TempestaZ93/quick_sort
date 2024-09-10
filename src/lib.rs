@@ -68,8 +68,8 @@ fn _quicksort<T: Ord + Clone>(data: &mut [T], start: usize, end: usize) {
 
 #[cfg(test)]
 mod tests {
-    use std::time::Duration;
     use rand::Rng;
+    use std::time::Duration;
 
     use super::*;
 
