@@ -10,60 +10,60 @@ pub fn quicksort_inplace<T: Ord + Clone>(data: &mut [T]) {
     _quicksort(data, 0, data.len());
 }
 
-fn _quicksort<T: Ord + Clone>(data: &mut [T], start: usize, end: usize) {
-    let amount = end - start;
+fn _quicksort<T: Ord + Clone>(data: &mut [T], start_index: usize, end_index: usize) {
+    let amount = end_index - start_index;
     if amount < 2 {
         return;
     }
 
-    let mid = start + amount / 2;
+    let mid_index = start_index + amount / 2;
     // take median of (start, mid, end) as pivot as it has low chance of O(n^2)
     let pivot = max(
-        min(data[start].clone(), data[end - 1].clone()),
+        min(data[start_index].clone(), data[end_index - 1].clone()),
         min(
-            max(data[start].clone(), data[end - 1].clone()),
-            data[mid].clone(),
+            max(data[start_index].clone(), data[end_index - 1].clone()),
+            data[mid_index].clone(),
         ),
     );
 
-    let mut pivot_idx = if pivot == data[start] {
-        start
-    } else if pivot == data[end - 1] {
-        end - 1
+    let mut pivot_index = if pivot == data[start_index] {
+        start_index
+    } else if pivot == data[end_index - 1] {
+        end_index - 1
     } else {
-        mid
+        mid_index
     };
 
     // bring elements in order
-    let mut idx = start;
-    while idx < pivot_idx {
-        if data[idx] > pivot {
+    let mut index = start_index;
+    while index < pivot_index {
+        if data[index] > pivot {
             // swap element right of pivot if it is greater and left of pivot
-            data.swap(idx, pivot_idx - 1);
-            data.swap(pivot_idx, pivot_idx - 1);
-            pivot_idx -= 1;
+            data.swap(index, pivot_index - 1);
+            data.swap(pivot_index, pivot_index - 1);
+            pivot_index -= 1;
             // if an element is moved from front to back, index must stay the same
             continue;
         }
-        idx += 1;
+        index += 1;
     }
 
-    idx = pivot_idx + 1;
-    while idx < end {
+    index = pivot_index + 1;
+    while index < end_index {
         // swap elements if they are not in right position
-        if data[idx] < pivot {
+        if data[index] < pivot {
             // swap element left of pivot if it is smaller and right of pivot
-            data.swap(idx, pivot_idx + 1);
-            data.swap(pivot_idx, pivot_idx + 1);
-            pivot_idx += 1;
+            data.swap(index, pivot_index + 1);
+            data.swap(pivot_index, pivot_index + 1);
+            pivot_index += 1;
         }
-        idx += 1;
+        index += 1;
     }
 
     // sort smaller elements
-    _quicksort(data, start, pivot_idx);
+    _quicksort(data, start_index, pivot_index);
     // sort bigger elements
-    _quicksort(data, pivot_idx + 1, end);
+    _quicksort(data, pivot_index + 1, end_index);
 }
 
 #[cfg(test)]
